@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        forest: "#0f2419",
-        surface: "#1a3a2e",
+        forest: "#003580",
+        surface: "#0047AB",
         mint: "#4ecb8d",
         gold: "#e8b84b",
         wrong: "#e05c5c",
-        cream: "#f0ede6",
+        cream: "#FFFFFF",
       },
       fontFamily: {
         syne: ["var(--font-syne)", "sans-serif"],

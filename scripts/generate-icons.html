@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Suomi Icons</title>
+  <style>
+    body { font-family: sans-serif; background: #0f2419; color: #f0ede6; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; margin: 0; }
+    h2 { margin: 0; }
+    .icons { display: flex; gap: 32px; align-items: flex-end; }
+    .icon-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    canvas { border-radius: 8px; }
+    a { background: #4ecb8d; color: #0f2419; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; }
+    a:hover { opacity: 0.85; }
+    p { color: #f0ede6aa; font-size: 13px; margin: 0; }
+  </style>
+</head>
+<body>
+  <h2>Suomi PWA Icons</h2>
+  <p>Click each button to download, then move both files into <code>suomi/public/</code></p>
+  <div class="icons" id="icons"></div>
+
+  <script>
+    function drawFlag(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const r = size * 0.208; // corner radius matches SVG rx="40" on 192px
+
+      // Rounded white background
+      ctx.beginPath();
+      ctx.moveTo(r, 0);
+      ctx.lineTo(size - r, 0);
+      ctx.arcTo(size, 0, size, r, r);
+      ctx.lineTo(size, size - r);
+      ctx.arcTo(size, size, size - r, size, r);
+      ctx.lineTo(r, size);
+      ctx.arcTo(0, size, 0, size - r, r);
+      ctx.lineTo(0, r);
+      ctx.arcTo(0, 0, r, 0, r);
+      ctx.closePath();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+
+      // Clip everything to that rounded rect
+      ctx.clip();
+
+      // Blue horizontal bar (y: 37.5%–58.3% of size)
+      ctx.fillStyle = '#003580';
+      ctx.fillRect(0, size * 0.375, size, size * 0.208);
+
+      // Blue vertical bar (x: 31.25%–52% of size — Nordic cross offset left)
+      ctx.fillRect(size * 0.3125, 0, size * 0.208, size);
+
+      return canvas;
+    }
+
+    const container = document.getElementById('icons');
+
+    for (const size of [192, 512]) {
+      const canvas = drawFlag(size);
+      // Display at 96px max so it fits on screen
+      const display = Math.min(size, 96);
+      canvas.style.width = display + 'px';
+      canvas.style.height = display + 'px';
+      canvas.style.imageRendering = 'auto';
+
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = `icon-${size}.png`;
+      a.textContent = `⬇ icon-${size}.png`;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'icon-wrap';
+      wrap.appendChild(canvas);
+      wrap.appendChild(a);
+      container.appendChild(wrap);
+    }
+  </script>
+</body>
+</html>

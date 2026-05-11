@@ -114,15 +114,18 @@ export default function LessonPage() {
           }),
         });
 
-        if (!res.ok) throw new Error("API error");
-        const data = (await res.json()) as ExerciseData;
+        const json = await res.json();
+        if (!res.ok) {
+          throw new Error(json.error ?? `HTTP ${res.status}`);
+        }
+        const data = json as ExerciseData;
         setExercise(data);
         setTimeout(() => setAnimateCard(true), 50);
         if (data.type === "production" || data.type === "fix_the_mistake" || data.type === "case_ending") {
           setTimeout(() => inputRef.current?.focus(), 100);
         }
-      } catch {
-        setError("Couldn't load exercise. Check your connection.");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Couldn't load exercise. Check your connection.");
       } finally {
         setLoading(false);
       }

@@ -4,8 +4,8 @@
   "description": "Finnish language learning app — learn Finnish for your trip to Finland",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f2419",
-  "theme_color": "#0f2419",
+  "background_color": "#003580",
+  "theme_color": "#003580",
   "orientation": "portrait",
   "icons": [
     {

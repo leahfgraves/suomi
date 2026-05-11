@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { ExerciseType } from "@/lib/curriculum";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+// Initialised inside the handler so a missing key produces a clear error
+// rather than a silent module-load failure.
 
 interface ExerciseRequest {
   skillId: string;
@@ -85,6 +86,16 @@ Make it feel authentic and relevant to real conversation. The exercise should be
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "ANTHROPIC_API_KEY is not set in environment variables" },
+        { status: 500 }
+      );
+    }
+
+    const client = new Anthropic({ apiKey });
+
     const body = (await request.json()) as ExerciseRequest;
 
     if (!body.skillId || !body.cardSeed || !body.exerciseType) {
@@ -126,7 +137,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json(parsed);
   } catch (error) {
-    console.error("Exercise API error:", error);
-    return NextResponse.json({ error: "Failed to generate exercise" }, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Exercise API error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
