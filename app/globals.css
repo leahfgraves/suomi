@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-forest: #0f2419;
+  --color-surface: #1a3a2e;
+  --color-mint: #4ecb8d;
+  --color-gold: #e8b84b;
+  --color-wrong: #e05c5c;
+  --color-cream: #f0ede6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--color-forest);
+  color: var(--color-cream);
+  font-family: "DM Sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* Safe area insets for iPhone notch/home bar */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-forest);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface);
+  border-radius: 2px;
+}
+
+/* Prevent text selection during exercises */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Smooth page transitions */
+.page-enter {
+  animation: fade-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Finnish flag colors for trip countdown */
+.trip-countdown-urgent {
+  animation: gold-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gold-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(232, 184, 75, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(232, 184, 75, 0);
+  }
+}
