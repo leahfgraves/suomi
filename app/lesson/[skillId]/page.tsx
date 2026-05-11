@@ -81,28 +81,6 @@ export default function LessonPage() {
   // Resolve "auto" to actual skill
   const skillId = rawSkillId === "auto" ? null : rawSkillId;
 
-  useEffect(() => {
-    const p = loadProgress();
-    setProgress(p);
-
-    let sess: SessionCard[];
-    if (skillId) {
-      sess = buildSession(p, skillId);
-    } else {
-      sess = buildSession(p);
-    }
-
-    if (sess.length === 0) {
-      // No cards due — build a fresh session from any skill
-      const firstSkill = SKILLS[0];
-      sess = buildSession(p, firstSkill.id);
-    }
-
-    setSession(sess);
-    setSessionTotal(sess.length);
-    loadExercise(sess[0], p);
-  }, []);
-
   const loadExercise = useCallback(
     async (card: SessionCard, p: UserProgress, index = 0, total = 0) => {
       setLoading(true);
@@ -151,6 +129,27 @@ export default function LessonPage() {
     },
     []
   );
+
+  useEffect(() => {
+    const p = loadProgress();
+    setProgress(p);
+
+    let sess: SessionCard[];
+    if (skillId) {
+      sess = buildSession(p, skillId);
+    } else {
+      sess = buildSession(p);
+    }
+
+    if (sess.length === 0) {
+      const firstSkill = SKILLS[0];
+      sess = buildSession(p, firstSkill.id);
+    }
+
+    setSession(sess);
+    setSessionTotal(sess.length);
+    loadExercise(sess[0], p);
+  }, [skillId, loadExercise]);
 
   function handleOptionSelect(option: string) {
     if (answerState !== "unanswered") return;

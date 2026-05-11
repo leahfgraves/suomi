@@ -18,7 +18,7 @@ export function TripCountdown() {
       </div>
       <div className="text-right">
         <div className="font-syne font-bold text-cream text-sm">July 25, 2026</div>
-        <div className="font-dm text-cream/50 text-xs mt-0.5">Oskari's family awaits</div>
+        <div className="font-dm text-cream/50 text-xs mt-0.5">Oskari&apos;s family awaits</div>
       </div>
     </div>
   );
